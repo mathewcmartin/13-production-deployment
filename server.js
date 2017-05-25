@@ -4,11 +4,16 @@ const pg = require('pg');
 const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
-const requestProxy = require('express-request-proxy'); // REVIEW: We've added a new package here to our requirements, as well as in the package.json
+const requestProxy = require('express-request-proxy'); // DONE: We've added a new package here to our requirements, as well as in the package.json
 const PORT = process.env.PORT || 3000;
 const app = express();
+<<<<<<< HEAD
 // const conString = 'postgres://USERNAME:PASSWORD@HOST:PORT';
 const conString = process.env.DATABASE_URL || 'postgres://localhost:5432/kilovolt';
+=======
+const conString = process.env.DATABASE_URL || 'postgres:1234@localhost: 5432';
+// const conString = ''; // DONE: Don't forget to set your own conString
+>>>>>>> 3a92e9185e1c8c7a22e25069b18e9494480c6e88
 const client = new pg.Client(conString);
 client.connect();
 client.on('error', err => console.error(err));
@@ -17,7 +22,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('./public'));
 
-// REVIEW: This is a new proxy method which acts as a 'middle man' (middleware) for our request.
+// DONE: This is a new proxy method which acts as a 'middle man' (middleware) for our request.
 function proxyGitHub(request, response) {
   console.log('Routing GitHub request for', request.params[0]);
   (requestProxy({
@@ -26,7 +31,7 @@ function proxyGitHub(request, response) {
   }))(request, response);
 }
 
-// REVIEW: This is a new route that will utilize our middle man proxy.
+// DONE: This is a new route that will utilize our middle man proxy.
 app.get('/github/*', proxyGitHub);
 
 app.get('/new', (request, response) => response.sendFile('new.html', {root: './public'}));
